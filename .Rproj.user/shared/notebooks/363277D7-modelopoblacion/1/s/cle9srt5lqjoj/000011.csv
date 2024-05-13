@@ -1,0 +1,17 @@
+"0","ggplot(poblacion, aes(x = Sexo, y = as.numeric(Edad_Anio))) +"
+"0","  geom_boxplot() +"
+"0","  labs(x = ""Sexo"", y = ""Edad (años)"") +"
+"0","  ggtitle(""Distribución de Edades por Sexo"")"
+"1","[1m[33mError[39m in `fortify()`:[22m
+[1m[22m[33m![39m `data` must be a [34m<data.frame>[39m, or an object coercible by
+  `fortify()`, or a valid [34m<data.frame>[39m-like object coercible by
+  `as.data.frame()`.
+[1mCaused by error in `.prevalidate_data_frame_like_object()`:[22m
+[1m[22m[33m![39m `dim(data)` must return an [34m<integer>[39m of length 2.
+Backtrace:
+[90m  1. [39mggplot2::ggplot(poblacion, aes(x = Sexo, y = as.numeric(Edad_Anio)))
+[90m  2. [39mggplot2:::ggplot.default(poblacion, aes(x = Sexo, y = as.numeric(Edad_Anio)))
+[90m  4. [39m[1m[94mggplot2:::fortify.default([39m[22mdata, ...[1m[94m)[39m[22m
+[90m 11. [39mggplot2:::validate_as_data_frame(model)
+[90m 12. [39m[1m[94mggplot2:::.prevalidate_data_frame_like_object([39m[22mdata[1m[94m)[39m[22m
+"

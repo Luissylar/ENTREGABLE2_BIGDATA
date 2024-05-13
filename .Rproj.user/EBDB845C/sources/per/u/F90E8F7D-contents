@@ -1,0 +1,63 @@
+install.packages("readxl")
+install.packages("readr")
+install.packages("ggplot2")
+install.packages("dplyr")
+
+install.packages("knitr")
+library(knitr)
+
+## Paso 1: Importar los datos del archivo CSV
+poblacion <- read.csv2("poblacion.csv")
+View(poblacion)
+
+## Paso 2: Explorar y entender la estructura de los datos
+
+head(poblacion)
+str(poblacion)
+
+
+summary(poblacion)
+
+
+summary(poblacion$Edad_Anio)
+
+poblacion <- poblacion[complete.cases(poblacion), ]
+
+## Paso  3: Visualización y análisis exploratorio
+
+# Convertir rangos de edad a valores numéricos
+poblacion$Edad_Num <- ifelse(grepl("-", poblacion$Edad_Anio),
+                             (as.numeric(substring(poblacion$Edad_Anio, 1, 2)) +
+                                as.numeric(substring(poblacion$Edad_Anio, 4, 5))) / 2,
+                             as.numeric(poblacion$Edad_Anio))
+
+
+# Verificar la nueva columna
+head(poblacion)
+
+# Visualización y análisis exploratorio
+ggplot(poblacion, aes(x = Sexo, y = Edad_Num)) +
+  geom_boxplot() +
+  labs(x = "Sexo", y = "Edad (años)") +
+  ggtitle("Distribución de Edades por Sexo")
+
+## Paso 4: Filtrar datos y realizar consultas específicas
+
+poblacion_ancash_sihuas <- poblacion %>%
+  filter(Departamento == "ANCASH" & Provincia == "SIHUAS")
+
+ggplot(poblacion_ancash_sihuas, aes(x = Edad_Num, y = Cantidad, fill = Sexo)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(x = "Edad (años)", y = "Cantidad", fill = "Sexo") +
+  ggtitle("Distribución por Edad y Sexo en ANCASH - SIHUAS")
+
+## Paso 5: Análisis de frecuencia de variables
+
+total_personas <- sum(poblacion$Cantidad)
+
+
+mayores_60 <- poblacion %>%
+  filter(grepl("^6", Edad_Anio) | grepl("^7", Edad_Anio)) %>%
+  summarise(Cantidad_Total = sum(Cantidad))
+
+porcentaje_mayores_60 <- (mayores_60$Cantidad_Total / total_personas) * 100
